@@ -1,25 +1,44 @@
 version: '3'
 
+networks:
+  api-network:
+    driver: bridge
+
+
 services:
   api:
-    build:
-      context: .
-      dockerfile: dockerfile
+    build: .
       
+    volumes:
+      - .:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+
     ports:
       - "8000:8000"
+    environment:
+      DATABASE: mydatabase
+      DATABASE_USER: root 
+      DATABASE_HOST: localhost
+      DATABASE_PASSWORD: password
+      DATABASE_PORT: 3308
+
+    networks:
+      - api-network   
     depends_on:
       - database
-    environment:
-       
+
 
   database:
     image: mysql:latest
-    environment:
-      DATABASE_USER:root
-      DATABASE_PASSWORD:password
-      MYSQL_ROOT_PASSWORD:root_pass
 
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABSE: mydatabase
 
     ports:
-      - "3306:3306"
+      - "3308:3308"
+    networks:
+      - api-network
+
