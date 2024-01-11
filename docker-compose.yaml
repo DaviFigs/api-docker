@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: dockerfile
+      
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    environment:
+       
+
+  database:
+    image: mysql:latest
+    environment:
+      DATABASE_USER:root
+      DATABASE_PASSWORD:password
+      MYSQL_ROOT_PASSWORD:root_pass
+
+
+    ports:
+      - "3306:3306"
