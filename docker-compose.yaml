@@ -31,10 +31,13 @@ services:
   database:
     image: mysql:latest
 
+    command: mysqld --default_authentication_plugin=mysql_native_password
+    
     environment:
       TZ: America/Sao_Paulo
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: password
       MYSQL_DATABSE: mydatabase
 
     ports:
