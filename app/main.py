@@ -5,8 +5,7 @@ app = FastAPI()
 #list all tasks
 @app.get('/list_tasks')
 def view_tasks():
-    pass
-
+    return {'message':'these are your things'}
 
 #adding and modifiyng tasks
 @app.post('/add_task')
