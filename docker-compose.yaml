@@ -6,15 +6,36 @@ networks:
 
 
 services:
-  api:
-    build: .
-      
+
+#DATABASE MYSQL CONTAINER 
+  database:
+    image: mysql:latest
+    container_name: mysql-container
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: root_passaword
+      MYSQL_USER: davi
+      MYSQL_PASSWORD: password
+      MYSQL_DATABSE: mydatabase
+      TZ: America/Sao_Paulo
+    
     volumes:
-      - .:/app
-    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+      - ./dados-mysql:/var/lib/mysql
 
     ports:
-      - "8000:8000"
+      - "3308:3308"
+    networks:
+      - api-network
+
+
+#API CONTAINER
+  api:
+    build: .
+    container_name: api-container
+      
+    depends_on:
+      - database
+
     environment:
       DATABASE: mydatabase
       DATABASE_USER: root 
@@ -22,26 +43,11 @@ services:
       DATABASE_PASSWORD: password
       DATABASE_PORT: 3308
 
+    ports:
+      - "8000:8000"
+
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
     networks:
       - api-network   
-    depends_on:
-      - database
-
-
-  database:
-    image: mysql:latest
-
-    command: mysqld --default_authentication_plugin=mysql_native_password
-    
-    environment:
-      TZ: America/Sao_Paulo
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_PASSWORD: password
-      MYSQL_DATABSE: mydatabase
-
-    ports:
-      - "3308:3308"
-    networks:
-      - api-network
 
