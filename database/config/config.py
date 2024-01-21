@@ -1,6 +1,6 @@
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+
 
 #Environ must be used in container api envs, 
 
@@ -12,8 +12,5 @@ PORT = os.environ['DATABASE_PORT']
 
 CONN_STRING = f'mysql+pymysql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}'
 
-engine = create_engine(CONN_STRING, echo=True)
-Session = sessionmaker(bind=engine)
-session = Session()
-
+ENGINE = create_engine(CONN_STRING, echo=True)
 
