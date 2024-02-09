@@ -36,7 +36,7 @@ services:
       - database
 
     environment:
-      DATABASE: mydatabase
+      DATABASE: test-db
       DATABASE_USER: root 
       DATABASE_HOST: localhost
       DATABASE_PASSWORD: password
