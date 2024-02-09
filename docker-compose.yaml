@@ -13,7 +13,7 @@ services:
     container_name: mysql-container
     
     environment:
-      MYSQL_ROOT_PASSWORD: root_passaword
+      MYSQL_ROOT_PASSWORD: root_password
       MYSQL_USER: davi
       MYSQL_PASSWORD: password
       MYSQL_DATABSE: mydatabase

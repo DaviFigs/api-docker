@@ -1,6 +1,6 @@
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+
 
 
 #Environ must be used in container api envs, 
@@ -15,7 +15,7 @@ CONN_STRING = f'mysql+pymysql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}'
 
 ENGINE = create_engine(CONN_STRING, echo=True)
 
-Base = declarative_base()
+
 
 
 

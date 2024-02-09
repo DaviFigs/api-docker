@@ -1,10 +1,17 @@
-from sqlalchemy import Column, String, Integer
-from config.config import Base
+from sqlalchemy import Column, String, Integer,ForeignKey
+from sqlalchemy.orm import relationship,declarative_base
+#from sqlalchemy.ext.declarative import declarative_base
+
+
+Base = declarative_base()
 
 class User(Base):
-    __tablename__ = 'User'
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
     username = Column(String(20),nullable=False)
     password = Column(String(20), nullable=False)
+    task = relationship("Task",back_populates="user")
 
     def __repr__(self):
         return f'Username: {self.username}, Password: {self.password} Task Num: '
@@ -13,27 +20,12 @@ class User(Base):
 class Task(Base):
     __tablename__ = 'task'
 
+    id = Column(Integer, primary_key=True)
+    id_user = Column(Integer, ForeignKey('user.id'))
     title = Column(String(20), nullable=False)
     priority = Column(Integer,nullable=False)
     state = Column(Integer, nullable=False)
 
     def __repr__(self):
         return f'Title:{self.title}, Priority:{self.priority}, State{self.state}'
-'''    
-class Employe(Base):
-    __tablename__ = 'employe'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(30), nullable=False)
-    cpf = Column(String(11),nullable=False)
-    salary = Column(Float, nullable=False)
-    supervisor = relationship("Supervisor", back_populates="employe")
-    manager = relationship("Manager", back_populates="employe")
-    operator = relationship("Operator", back_populates="employe")
-
-class Manager(Base):
-    __tablename__ = 'manager'
-    id = Column(Integer, primary_key=True)
-    id_employe = Column(Integer, ForeignKey('employe.id'))
-    unit = Column(String(30), nullable=False)
-    employe = relationship("Employe", back_populates="manager")
-'''
+    
