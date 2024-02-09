@@ -1,56 +1,48 @@
-version: '3'
+version: '7'
 
 networks:
   api-network:
     driver: bridge
 
-
 services:
 
-#DATABASE MYSQL CONTAINER 
+  #mysql container
+
   database:
     image: mysql:latest
     container_name: mysql-container
-    
-    environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_USER: davi
-      MYSQL_PASSWORD: password
-      MYSQL_DATABASE: test-db
-      TZ: America/Sao_Paulo
-    
-    volumes:
-      - ./dados-mysql:/var/lib/mysql
 
+    environment:
+      MYSQL_USER: davi
+      MYSQL_DATABASE: database-test
+      MYSQL_ROOT_PASSWORD: my-pass
+      MYSQL_PASSWORD: my-pass
+
+    volumes:
+      - ./volume-mysql:/var/lib/mysql
     ports:
       - "3308:3308"
     networks:
       - api-network
+    
 
-
-
-
-#API CONTAINER
-  api:
+  #api container
+  api-container:
     build: .
     container_name: api-container
-      
+
     depends_on:
       - database
-
     environment:
-      DATABASE: test-db
-      DATABASE_USER: root 
+      DATABASE: database-test
+      DATABASE_USER: root
       DATABASE_HOST: localhost
-      DATABASE_PASSWORD: password
+      DATABASE_PASSWORD: my-pass
       DATABASE_PORT: 3308
 
     ports:
       - "8000:8000"
-
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
     networks:
-      - api-network   
-
-#mysql
+      - api-network
